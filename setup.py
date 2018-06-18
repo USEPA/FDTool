@@ -1,0 +1,25 @@
+import re
+from setuptools import setup
+
+version = re.search(
+    '^__version__\s*=\s*"(.*)"',
+    open('fdtool/fdtool.py').read(),
+    re.M
+    ).group(1)
+
+with open("README.md", "rb") as f:
+    long_descr = f.read().decode("utf-8")
+
+setup(name='fdtool',
+        version= version,
+        packages = ["fdtool"],
+        entry_points = {
+        "console_scripts": ['fdtool = fdtool.fdtool:main']
+        },
+        description='Identify functional dependencies and keys in tabular data',
+        long_description = long_descr,
+        url='https://github.com/mburanosky17/FDTool/',
+        author='Matt Buranosky',
+        author_email='buranosky.matthew@epa.gov',
+        license='CC0',
+        zip_safe=False)
