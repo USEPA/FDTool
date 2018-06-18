@@ -1,7 +1,0 @@
-# Ignore files created as LaTex compiles
-*.aux
-*.bbl
-*.blg
-*.log
-*.out
-*.synctex.gz
