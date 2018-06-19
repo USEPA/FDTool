@@ -16,7 +16,7 @@ setup(name='fdtool',
         entry_points = {
         "console_scripts": ['fdtool = fdtool.fdtool:main']
         },
-        description='Identify functional dependencies and keys in tabular data',
+        description='Identify functional dependencies, equivalences, and candidate keys in tabular data',
         long_description = long_descr,
         url='https://github.com/mburanosky17/FDTool/',
         author='Matt Buranosky',
