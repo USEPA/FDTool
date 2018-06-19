@@ -1,5 +1,4 @@
 include LICENSE.md
-include README.md
 
 recursive-include fdtool/modules *
 include fdtool/modules/dbschema

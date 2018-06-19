@@ -51,8 +51,8 @@ def f(C_k, E, Closure, df, U):
                     if len(X) == 1: 
                         try:
                              # Drop column if in the relation
-                             df = df.drop(X, axis=1)
-                        except ValueError or TypeError:
+                             df = df.drop(X[0], 1)
+                        except ValueError or TypeError or KeyError:
                             # Pass if attribute does not appear in the relation
                             pass;
                     
