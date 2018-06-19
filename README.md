@@ -1,7 +1,7 @@
-#### README: Algorithm to mine for functional dependencies and keys
+#### README: Algorithm to mine for functional dependencies, equivalences and candidate keys
 
 ##### Description: 
-FDTool is a Python command-line application that mines functional dependencies and
+FDTool is a Python command-line application that mines functional dependencies, equivalences and
 candidate keys from datasets read in from .csv, .txt, and .pkl files.
 
 ##### Dependencies:
