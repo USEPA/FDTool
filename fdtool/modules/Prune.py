@@ -52,7 +52,7 @@ def f(C_k, E, Closure, df, U):
                         try:
                              # Drop column if in the relation
                              df = df.drop(X[0], 1)
-                        except ValueError or TypeError or KeyError:
+                        except (KeyError, ValueError, TypeError) as e:
                             # Pass if attribute does not appear in the relation
                             pass;
                     
