@@ -6,7 +6,7 @@ from fdtool import main
 p = multiprocessing.Process(target=main, name="Main")
 p.start()
 # Wait 4 hours for main
-p.join(1440)
+p.join(14400)
 
 # If thread is active
 if p.is_alive():
