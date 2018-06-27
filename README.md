@@ -19,7 +19,7 @@ $ python setup.py install
 
 ##### Run Application:
 ```	
-$ python fdtool /path/to/file
+$ fdtool /path/to/file
 ```
 
 ##### Output:
