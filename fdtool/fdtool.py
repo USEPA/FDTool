@@ -19,13 +19,14 @@
 #   C_k = Prune(C_km1, C_k, E)
 #}
 
-__version__="0.1.3"
+__version__="0.1.4"
 
 
 import pandas as pd
 import sys, time, argparse, ntpath, pickle, csv
 from modules import *
 from string import ascii_lowercase
+from config import MAX_K_LEVEL
 
 def main():
 
@@ -78,10 +79,11 @@ def main():
 
     # Define start time
     start_time = time.time()
-    # Create default name for outFile
-    outFileName = str(ntpath.basename(filePath)).split('.')[0] + '.FD_Info.txt';
-    # Create file and begin writing to it
-    file = open(outFileName, 'w+')
+    
+    # Create default name for outFile if one is not chosen on command
+    if len(sys.argv) > 2: file  = open(sys.argv[2], 'w+')
+    else: file = open(str(ntpath.basename(filePath)).split('.')[0] + '.FD_Info.txt', 'w+')
+    
     # Add name of file , row count, columns to info string
     file.write(str("Table : " + str(ntpath.basename(filePath)).split('.')[0] + "\n" + "Columns : " 
         + str(", ".join(list(df.head(0)))) + "\n\n" + "Functional Dependencies: \n"))
@@ -147,8 +149,10 @@ def main():
             # Write string to TXT file
             file.write(String + "\n")
         
-        # break while loop if cardinality of C_k is 0
+        # Break while loop if cardinality of C_k is 0
         if not len(C_k) > 0: break;
+        # Break while loop if k-level reaches level set in config
+        if k is not None and MAX_K_LEVEL ==k: break;
 
     # Print equivalences
     file.write("\n" + "Equivalences: " + "\n")
