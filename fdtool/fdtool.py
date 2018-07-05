@@ -19,7 +19,7 @@
 #   C_k = Prune(C_km1, C_k, E)
 #}
 
-__version__="0.1.5"
+__version__="0.1.6"
 
 
 import pandas as pd
