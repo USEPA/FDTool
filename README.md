@@ -13,7 +13,7 @@ candidate keys from datasets read in from .csv, .txt, and .pkl files.
 ##### Configuration:
 
 Edit ```REPO\fdtool\config.py``` prior to building set up to
-change preset time limit or preset max k-level. Include (optional) custom outfile
+change preset time limit or max k-level. Include (optional) custom outfile
 name after command to run application.
 
 ##### Build setup:
