@@ -10,6 +10,11 @@ candidate keys from datasets read in from .csv, .txt, and .pkl files.
 
   2. [Pandas](https://pandas.pydata.org/)
 
+##### Configuration:
+
+```REPO\fdtool\config.py``` can be edited before building set up to
+change preset time limit or preset max k-level.
+
 ##### Build setup:
 ```
 $ git clone https://github.com/USEPA/FDTool.git
