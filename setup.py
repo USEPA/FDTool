@@ -10,7 +10,6 @@ version = re.search(
 with open("README.md", "rb") as f:
     long_descr = f.read().decode("utf-8")
 
-
 setup(name='fdtool',
         version= version,
         packages = ["fdtool"],
@@ -19,7 +18,7 @@ setup(name='fdtool',
         },
         description='Identify functional dependencies, equivalences, and candidate keys in tabular data',
         long_description = long_descr,
-        long_description_content_type="text/markdown",
+        long_description_content_type='text/markdown',
         url='https://github.com/USEPA/FDTool/',
         author='Matt Buranosky',
         include_package_data=True,
