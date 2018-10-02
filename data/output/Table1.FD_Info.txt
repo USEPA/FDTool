@@ -1,0 +1,25 @@
+Table : Table1
+Columns : A, B, C, D, E
+
+Functional Dependencies: 
+{A} -> {D}
+{D} -> {A}
+{A, B} -> {E}
+{C, E} -> {A}
+{B, E} -> {A}
+
+Equivalences: 
+{A} <-> {D}
+{A, B} <-> {B, E}
+
+Keys: 
+{B, C, D}
+{A, B, C}
+{B, C, E}
+
+Time (s): 0.021
+Row count: 7
+Attribute count: 5
+Number of Equivalences: 2
+Number of FDs: 5
+Number of FDs checked: 19
