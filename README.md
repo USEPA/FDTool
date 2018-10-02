@@ -31,6 +31,9 @@ $ fdtool /path/to/file
 ##### Output:
 ![output](images/sampleOutput.PNG)
 
+##### DOI Badge:
+[![DOI](https://zenodo.org/badge/151299984.svg)](https://zenodo.org/badge/latestdoi/151299984)
+
 ##### Notes:
 Module ```REPO/fdtool/modules/dbschema``` released under C-FSL license 
 and copyright held by Elmar Stellnberger.
