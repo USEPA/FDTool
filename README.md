@@ -32,7 +32,7 @@ $ fdtool /path/to/file
 ![output](images/sampleOutput.PNG)
 
 ##### DOI Badge:
-[![DOI](https://zenodo.org/badge/151299984.svg)](https://zenodo.org/badge/latestdoi/151299984)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3245414.svg)](https://doi.org/10.5281/zenodo.3245414)
 
 ##### Notes:
 Module ```REPO/fdtool/modules/dbschema``` released under C-FSL license 
