@@ -230,85 +230,92 @@ def main():
 
     while True:
 
-        
-
-        # Increment k; initialize C_km1
-
-        k += 1; C_km1 = C[k-1];
-
-        # Initialize Closure at next next k-level; update dict accordinaly
-
-        Closure_k = {binaryRepr.toBin(Subset, U) : set(Subset) for Subset in next(Subset_Gen)}; Closure.update(Closure_k);
-
-        # Update Cardinality dict with next k-level
-
-        Cardinality.update({element: None for element in Closure_k})
-
-
-
-        if k > 1:
-
-            # Dereference Closure and Cardinality at (k-2)-level
-
-            for Subset in C[k-2]: del Closure[binaryRepr.toBin(Subset, U)], Cardinality[binaryRepr.toBin(Subset, U)];
-
-            # Dereference (k-2)-level
-
-            C[k-2] = None;
-
-
-
-        # Run Apriori_Gen to get k-level Candidate row from (k-1)-level Candidate row
-
-        C_k = Apriori_Gen.oneUp(C_km1)
-
-        # Run GetFDs to get closure and set of functional dependencies
-
-        Closure, F, Cardinality = GetFDs.f(C_km1, df, Closure, U, Cardinality)
-
-        # Run Obtain Equivalences to get set of attribute equivalences
-
-        E = ObtainEquivalences.f(C_km1, F, Closure, U)
-
-        # Run Prune to reduce next k-level iterateion and delete equivalences; initialize C_k
-
-        C_k, Closure, df = Prune.f(C_k, E, Closure, df, U); C[k] = C_k;
-
-        #Increment counter for the number of Equivalences/FDs added at this level
-
-        Counter[0] += len(E); Counter[1] += len(F); E_Set += E
+        try:
 
         
 
-        # Print out FDs
+            # Increment k; initialize C_km1
 
-        for FunctionalDependency in F:
+            k += 1; C_km1 = C[k-1];
 
-            # Store well-formatted FDs in empty list
+            # Initialize Closure at next next k-level; update dict accordinaly
 
-            FD_Store.append(["".join(sorted([Alpha_Dict[i] for i in FunctionalDependency[0]])), Alpha_Dict[FunctionalDependency[1]]]);
+            Closure_k = {binaryRepr.toBin(Subset, U) : set(Subset) for Subset in next(Subset_Gen)}; 
+            Closure.update(Closure_k);
 
-            # Create string for functional dependency
+            # Update Cardinality dict with next k-level
 
-            String = "{" + ", ".join(FunctionalDependency[0]) + "} -> {" + str(FunctionalDependency[1]) + "}"
+            Cardinality.update({element: None for element in Closure_k})
 
-            # Print FD String
 
-            print(String); sys.stdout.flush();
 
-            # Write string to TXT file
+            if k > 1:
 
-            file.write(String + "\n")
+                # Dereference Closure and Cardinality at (k-2)-level
 
-        
+                for Subset in C[k-2]: del Closure[binaryRepr.toBin(Subset, U)], Cardinality[binaryRepr.toBin(Subset, U)];
 
-        # Break while loop if cardinality of C_k is 0
+                # Dereference (k-2)-level
 
-        if not len(C_k) > 0: break;
+                C[k-2] = None;
 
-        # Break while loop if k-level reaches level set in config
 
-        if k is not None and MAX_K_LEVEL ==k: break;
+
+            # Run Apriori_Gen to get k-level Candidate row from (k-1)-level Candidate row
+
+            C_k = Apriori_Gen.oneUp(C_km1)
+
+            # Run GetFDs to get closure and set of functional dependencies
+
+            Closure, F, Cardinality = GetFDs.f(C_km1, df, Closure, U, Cardinality)
+
+            # Run Obtain Equivalences to get set of attribute equivalences
+
+            E = ObtainEquivalences.f(C_km1, F, Closure, U)
+
+            # Run Prune to reduce next k-level iterateion and delete equivalences; initialize C_k
+
+            C_k, Closure, df = Prune.f(C_k, E, Closure, df, U); C[k] = C_k;
+
+            #Increment counter for the number of Equivalences/FDs added at this level
+
+            Counter[0] += len(E); Counter[1] += len(F); E_Set += E
+
+            
+
+            # Print out FDs
+
+            for FunctionalDependency in F:
+
+                # Store well-formatted FDs in empty list
+
+                FD_Store.append(["".join(sorted([Alpha_Dict[i] for i in FunctionalDependency[0]])), Alpha_Dict[FunctionalDependency[1]]]);
+
+                # Create string for functional dependency
+
+                String = "{" + ", ".join(FunctionalDependency[0]) + "} -> {" + str(FunctionalDependency[1]) + "}"
+
+                # Print FD String
+
+                print(String); sys.stdout.flush();
+
+                # Write string to TXT file
+
+                file.write(String + "\n")
+
+            
+
+            # Break while loop if cardinality of C_k is 0
+
+            if not len(C_k) > 0: break;
+
+            # Break while loop if k-level reaches level set in config
+
+            if k is not None and MAX_K_LEVEL ==k: break;
+
+        except StopIteration:
+            break
+
 
 
 
@@ -387,8 +394,3 @@ def main():
     # Close file
 
     file.close()
-
-
-
-
-
