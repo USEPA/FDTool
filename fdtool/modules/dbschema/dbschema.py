@@ -20,8 +20,8 @@
 import sys,re,string,math;
 from itertools import *
 
-lowercase = string.lowercase + u"ßäöüçáéíóúàèìòùãẽĩõũâêîôûëï";
-uppercase = string.uppercase + u"ÄÖÜÇÁÉÍÓÚÀÈÌÒÙÃẼĨÕŨÂÊÎÔÛËÏ"
+lowercase = string.ascii_lowercase + u"ßäöüçáéíóúàèìòùãẽĩõũâêîôûëï";
+uppercase = string.ascii_uppercase + u"ÄÖÜÇÁÉÍÓÚÀÈÌÒÙÃẼĨÕŨÂÊÎÔÛËÏ"
 letters = lowercase + uppercase;
 
 def upcSplit(s):
@@ -80,17 +80,17 @@ global sort; shouldsort = True;
 def attr2str(attrs,attrsep='' if upcsplit else ';'):
   attrs = list(attrs);
   if shouldsort: attrs.sort();
-  return string.join(attrs,attrsep);
+  return attrsep.join(attrs);
 
 def abh2str(li,re):
   attrsep = '' if upcsplit else ';'
   li = list(li); re = list(re); 
   if shouldsort: li.sort(); re.sort();
-  return string.join(li,attrsep) + '->' + string.join(re,attrsep);
+  return attrsep.join(li) + '->' + attrsep.join(re);
 
 def abhh2str(abhh,linesep='\n'):
   lii = list(abhh.keys()); 
-  def setcmp(set1,set2): return cmp( string.join(set1,''), string.join(set2,'') )
+  def setcmp(set1,set2): return cmp( ''.join(set1), ''.join(set2) )
   if shouldsort: lii.sort(setcmp);
   result="";  
   for li in lii:
@@ -109,10 +109,10 @@ def closure(attrs,abh):
     while haschanged:
       haschanged = False;
       for (li,re) in abh.items():
-	if li <= attrs and not re <= attrs: 
-	  attrs = attrs.union(re);
-	  haschanged = True;
-  except Exception, ex:
+        if li <= attrs and not re <= attrs: 
+          attrs = attrs.union(re);
+          haschanged = True;
+  except Exception as ex:
     print >>sys.stderr, "error in dependency: %s->%s" % (li,re)
     raise ex;
   return attrs;
@@ -122,7 +122,7 @@ def shuffle(lis,num):   # permutates lis according to num
   newlis=[]; positions=1;
   while positions <= len(lis):	  
     item = lis[len(lis)-positions]; 
-    newlis.insert( num % positions, item );
+    newlis.insert( int(num % positions), item );
     num = num / positions;
     positions+=1;
   return newlis;
@@ -181,9 +181,9 @@ def mincoverage(abh,scramble=0,hints={}):
     for r in newre_list:
       precond.remove(r);
       if r in closure(precond,redabh):   # precond already contains the right sides of the other rules
-	newre.remove(r);                 # this is the same as closure( li, redabh + {li->each other right side} )
+	      newre.remove(r);                 # this is the same as closure( li, redabh + {li->each other right side} )
       else:
-	precond.add(r);
+	      precond.add(r);
 
     if len(newre) == 0:
       abh = redabh; 
@@ -197,28 +197,29 @@ def mincoverage(abh,scramble=0,hints={}):
 	# it tries to reduce the left side for the whole rule bundle only
 	# however if the start set misses one precondition of the other rules those rules could never fire (unless this precondition got inferenced)
 	# i.e. if they can never fire the other rules of the rule bundle do not need to be considered  (however if it gets inferenced then leaving it out will already be ok)
-	lired = liset;
-	for l in li:
-	  tryred = lired.copy(); tryred.remove(l);
-	  cls = closure(tryred,redabh)
-	  if li <= cls:
-	    lired = tryred;
+        lired = liset;
+        for l in li:
+          tryred = lired.copy(); 
+          tryred.remove(l);
+          cls = closure(tryred,redabh)
+          if li <= cls:
+            lired = tryred;
 	
 	# now if the left side has been successfully reduced make these changes persistent
-	if lired != li:
-	  abh = redabh; lired = frozenset(lired);  # left sides need to be unchangeable frozensets in order to serve as dictionary keys
-	  if lired in abh:
-	    # if there do already exist rules which have a left side being the same as our new reduced left side add the new rules here
-	    abh[lired] = abh[lired].union(newre);
-	  else:
-	    # otherwise add as new rule bundle
-	    abh[lired] = newre;
-	  installed_newre = True;
+        if lired != li:
+          abh = redabh; lired = frozenset(lired);  # left sides need to be unchangeable frozensets in order to serve as dictionary keys
+          if lired in abh:
+            # if there do already exist rules which have a left side being the same as our new reduced left side add the new rules here
+            abh[lired] = abh[lired].union(newre);
+          else:
+            # otherwise add as new rule bundle
+            abh[lired] = newre;
+            installed_newre = True;
 
-      if not installed_newre:
-	# install the reduced right side if the left side has stayed the same
-	abh = redabh;
-	abh[li] = newre;
+          if not installed_newre:
+        # install the reduced right side if the left side has stayed the same
+            abh = redabh;
+            abh[li] = newre;
 
   return abh;
 
@@ -275,22 +276,22 @@ def keysTreeAlg( attr, abh, verbty=None ):
       # this ensures that the same attribute configuration is only considered once in ascending order of the individual attributes
       missingattr = set();
       for a in mi: 
-	if a > maxm and a not in subkey: missingattr.add(a);
+	      if a > maxm and a not in subkey: missingattr.add(a);
 
       for m in missingattr:
-	newattr = subkey.union(frozenset(m));   # do pick the attribute
-	ispartofkey = False;
-	for key in keys:
-	  if key <= newattr:
-	    ispartofkey = True;
-	    break;
-	if not ispartofkey:
-	  if closure(newattr,abh) == attr:
-	    keys.add(newattr);
-	    for p in newattr: primattr.add(p);
-	  else: # if neither a new key was found nor has the new attribute configuration been a superset of an existing key 
-	        # then remember this configuration and add one more attribute in the next step
-	    curlvl[newattr] = max(maxm,m);
+	      newattr = subkey.union(frozenset(m));   # do pick the attribute
+	      ispartofkey = False;
+    for key in keys:
+      if key <= newattr:
+        ispartofkey = True;
+        break;
+    if not ispartofkey:
+      if closure(newattr,abh) == attr:
+        keys.add(newattr);
+        for p in newattr: primattr.add(p);
+      else: # if neither a new key was found nor has the new attribute configuration been a superset of an existing key 
+            # then remember this configuration and add one more attribute in the next step
+        curlvl[newattr] = max(maxm,m);
 	
   return (primattr,keys);
 

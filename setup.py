@@ -3,7 +3,7 @@ from setuptools import setup
 
 version = re.search(
     '^__version__\s*=\s*"(.*)"',
-    open('fdtool/fdtool.py').read(),
+    open('fdtool/fdtool.py', encoding="utf-8").read(),
     re.M
     ).group(1)
 
